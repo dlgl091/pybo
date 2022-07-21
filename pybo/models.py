@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+from hitcount.models import HitCountMixin, HitCount
 
 # Create your models here.
 # 질문 모델
-class Question(models.Model):
+class Question(models.Model, HitCountMixin):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author_question')
     subject = models.CharField(max_length=200)
     content = models.TextField()

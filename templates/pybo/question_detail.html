@@ -27,7 +27,13 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-text">{{ question.content|mark }}</div>
+                    <!-- 조회수 추가 -->
+                        <div class="hit-count">
+
+                            조회수 {{ question.current_hit_count }}
+                        </div>
                     <div class="d-flex justify-content-end">
+
                         {% if question.modify_date %}
                         <div class="badge badge-light p-2 text-left mx-3">
                             <div class="mb-2">modified at</div>
