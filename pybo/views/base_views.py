@@ -2,7 +2,6 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q, Count
 import logging
-from hitcount.views import HitCountDetailView
 
 from ..models import Question
 
@@ -48,7 +47,6 @@ def detail(request, question_id):
     """
     question = get_object_or_404(Question, pk=question_id) # pk에 해당하는 건이 없으면 오류 대신 404 페이지 반환
     context = {'question' : question}
-    count_hit = True
     return render(request, 'pybo/question_detail.html', context)
 
 

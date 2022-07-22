@@ -28,6 +28,7 @@
                 <th style="width:50%">제목</th>
                 <th>글쓴이</th>
                 <th>작성일시</th>
+                <th>조회수</th>
             </thead>
         </tr>
         </thead>
@@ -49,13 +50,14 @@
                     {{ question.subject }}
                 </a>
                 {% if question.answer_set.count > 0 %}
-                <span class="text-danger small ml-2">
-                    {{ question.answer_set.count }}
+                <span class="text-muted regular ml-2">
+                    ({{ question.answer_set.count }})
                 </span>
                 {% endif %}
             </td>
             <td class="text-left">{{ question.author.username }}</td> <!-- 글쓴이 추가 -->
-            <td>{{ question.create_date }}</td>
+            <td>{{ question.create_date|date:'m월 d일 H:i' }}</td>
+            <td class="text-left">{{ question.hit }}</td>
         </tr>
         {% endfor %}
         {% else %}

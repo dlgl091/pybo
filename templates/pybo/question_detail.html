@@ -27,22 +27,22 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-text">{{ question.content|mark }}</div>
-                    <!-- 조회수 추가 -->
-                        <div class="hit-count">
 
-                            조회수 {{ question.current_hit_count }}
-                        </div>
+
                     <div class="d-flex justify-content-end">
-
+                        <div class="badge badge-light p-2 text-left mx-3">
+                        <!-- 조회수 추가 -->
+                        조회수 : {{ question.update_counter }}
+                        </div>
                         {% if question.modify_date %}
                         <div class="badge badge-light p-2 text-left mx-3">
                             <div class="mb-2">modified at</div>
-                            <div>{{ question.modify_date }}</div>
+                            <div>{{ question.modify_date|date:'m월 d일 H:i' }}</div>
                         </div>
                         {% endif %}
                         <div class="badge badge-light p-2 text-left">
                             <div class="mb-2">{{ question.author.username }}</div>
-                            <div>{{ question.create_date }}</div>
+                            <div>{{ question.create_date|date:'m월 d일 H:i' }}</div>
                         </div>
                     </div>
                     {% if request.user == question.author %} <!-- 유저와 작성자가 같은 사람이라면 수정 버튼 추가 -->
@@ -60,9 +60,9 @@
                             <div class="comment py-2 text-muted">
                                 <span style="white-space: pre-line;">{{ comment.content }}</span>
                                 <span>
-                                    - {{ comment.author }}, {{ comment.create_date }}
+                                    - {{ comment.author }}, {{ comment.create_date|date:'m월 d일 H:i' }}
                                     {% if comment.modify_date %}
-                                    (수정:{{ comment.modify_date }})
+                                    (수정:{{ comment.modify_date|date:'m월 d일 H:i' }})
                                     {% endif %}
                                 </span>
                                 {% if request.user == comment.author %}
@@ -106,12 +106,12 @@
                         {% if answer.modify_date %}
                         <div class="badge badge-light p-2 text-left mx-3">
                             <div class="mb-2">modified at</div>
-                            <div>{{ answer.modify_date }}</div>
+                            <div>{{ answer.modify_date|date:'m월 d일 H:i' }}</div>
                         </div>
                         {% endif %}
                         <div class="badge badge-light p-2 text-left">
                             <div class="mb-2">{{ question.author.username }}</div> <!-- 댓글작성자 이름도 추가 -->
-                            <div>{{ answer.create_date }}</div>
+                            <div>{{ answer.create_date|date:'m월 d일 H:i' }}</div>
                         </div>
                     </div>
                     {% if request.user == answer.author %}
@@ -130,9 +130,9 @@
                         <div class="comment py-2 text-muted">
                             <span style="white-space: pre-line;">{{ comment.content }}</span>
                             <span>
-                                - {{ comment.author }}, {{ comment.create_date }}
+                                - {{ comment.author }}, {{ comment.create_date|date:'m월 d일 H:i' }}
                                 {% if comment.modify_date %}
-                                (수정:{{ comment.modify_date }})
+                                (수정:{{ comment.modify_date|date:'m월 d일 H:i' }})
                                 {% endif %}
                             </span>
                             {% if request.user == comment.author %}
