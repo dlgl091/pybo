@@ -1,3 +1,5 @@
+import os
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -39,3 +41,11 @@ class Comment(models.Model):
     modify_date = models.DateTimeField(null=True, blank=True)
     question = models.ForeignKey(Question, null=True, blank=True, on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer, null=True, blank=True, on_delete=models.CASCADE)
+
+# 이미지 파일 모델
+class Document(models.Model):
+    title = models.CharField(max_length = 200)
+    attached = models.FileField('첨부 파일', upload_to = "Uploaded/")
+    dateTimeOfUpload = models.DateTimeField(auto_now = True)
+    def get_filename(self):
+        return os.path.basename(self.attached.name)

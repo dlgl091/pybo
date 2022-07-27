@@ -1,5 +1,5 @@
 from django import forms
-from pybo.models import Question, Answer, Comment
+from pybo.models import Question, Answer, Comment, Document
 
 class QuestionForm(forms.ModelForm):
     class Meta:
@@ -24,3 +24,10 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ['content']
         labels = {'content':'댓글내용'}
+
+class DocumentForm(forms.ModelForm):
+    upload = forms.FileField(label='첨부 파일', required=False,
+                             widget=forms.FileInput(attrs={'class':'form'}))
+    class Meta:
+        model = Document
+        exclude = ['attached']

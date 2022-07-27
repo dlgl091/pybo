@@ -2,9 +2,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
+from django.views.generic.edit import FormView
+from django.urls import reverse_lazy
 
-from ..forms import QuestionForm
-from ..models import Question
+from ..forms import QuestionForm, DocumentForm
+from ..models import Question, Document
 
 @login_required(login_url='common:login')
 def question_create(request):
@@ -12,6 +14,7 @@ def question_create(request):
     pybo 질문 등록
     """
     if request.method == 'POST':
+        form = QuestionForm(request.POST)
         form = QuestionForm(request.POST)
         if form.is_valid():
             question = form.save(commit=False)
@@ -21,8 +24,21 @@ def question_create(request):
             return redirect('pybo:index')
     else:
         form = QuestionForm()
-    context = {'form':form}
-    return render(request, 'pybo/question_form.html', {'form' : form})
+    context = {'form': form}
+    return render(request, 'pybo/question_form.html', context)
+
+
+class DocumentCreateView(FormView):
+    template_name = "document/new.html"
+    form_class = DocumentForm()
+    success_url = reverse_lazy('document_list')
+
+    def form_valid(self, form):
+        if self.request.FILES:
+            form.instance.attached = self.request.FILES['upload']
+
+        form.save()
+        return super().form_valid(form)
 
 @login_required(login_url='common:login')
 def question_modify(request, question_id):
