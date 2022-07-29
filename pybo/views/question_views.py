@@ -5,40 +5,28 @@ from django.utils import timezone
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 
-from ..forms import QuestionForm, DocumentForm
-from ..models import Question, Document
+from ..forms import QuestionForm
+from ..models import Question
 
 @login_required(login_url='common:login')
 def question_create(request):
     """
     pybo 질문 등록
     """
-    if request.method == 'POST':
-        form = QuestionForm(request.POST)
-        form = QuestionForm(request.POST)
+    if request.method == 'POST': # 저장하기, 입력 후 실행부
+        form = QuestionForm(request.POST, request.FILES)
         if form.is_valid():
             question = form.save(commit=False)
+            question.imgfile = request.FILES["imgfile"] # 꼭 !!!! files는 따로 request의 FILES로 속성을 지정해줘야 함
             question.author = request.user
             question.create_date = timezone.now()
             question.save()
             return redirect('pybo:index')
-    else:
+    else: # request.method가 'get'인 경우 호출, 질문 등록하기, 입력 전 실행부
         form = QuestionForm()
     context = {'form': form}
     return render(request, 'pybo/question_form.html', context)
 
-
-class DocumentCreateView(FormView):
-    template_name = "document/new.html"
-    form_class = DocumentForm()
-    success_url = reverse_lazy('document_list')
-
-    def form_valid(self, form):
-        if self.request.FILES:
-            form.instance.attached = self.request.FILES['upload']
-
-        form.save()
-        return super().form_valid(form)
 
 @login_required(login_url='common:login')
 def question_modify(request, question_id):

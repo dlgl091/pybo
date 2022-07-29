@@ -27,11 +27,15 @@
             <textarea class="form-control" name="content" id="content" rows="10">
                 {{ form.content.value|default_if_none:'' }}</textarea>
         </div>
-        <form action="{% url 'DocumentCreateView' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form }}
-        </form>
-        <button type="submit" class="btn btn-primary">저장하기</button>
+        <div class="form-group">
+            <label for="imgfile">첨부파일 : </label>
+            <input type="file" class="form-control" name="imgfile" id="imgfile">
+        </div>
+        <div>
+            <br>
+            <button type="submit" class="btn btn-primary">저장하기</button>
+            <br>
+        </div>
     </form>
 </div>
 {% endblock %}
