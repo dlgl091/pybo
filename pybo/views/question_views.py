@@ -2,8 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from django.views.generic.edit import FormView
-from django.urls import reverse_lazy
+
 
 from ..forms import QuestionForm
 from ..models import Question
@@ -14,10 +13,10 @@ def question_create(request):
     pybo 질문 등록
     """
     if request.method == 'POST': # 저장하기, 입력 후 실행부
-        form = QuestionForm(request.POST, request.FILES)
+        form = QuestionForm(request.POST)
         if form.is_valid():
             question = form.save(commit=False)
-            question.imgfile = request.FILES["imgfile"] # 꼭 !!!! files는 따로 request의 FILES로 속성을 지정해줘야 함
+            question.imgfile = request.FILES.get("imgfile")  # 꼭 !!!! files는 따로 request의 FILES로 속성을 지정해줘야 함
             question.author = request.user
             question.create_date = timezone.now()
             question.save()
@@ -42,6 +41,7 @@ def question_modify(request, question_id):
         form = QuestionForm(request.POST, instance=question)
         if form.is_valid():
             question = form.save(commit=False)
+            question.imgfile = request.FILES["imgfile"]  # 꼭 !!!! files는 따로 request의 FILES로 속성을 지정해줘야 함
             question.author = request.user
             question.modify_date = timezone.now()
             question.save()
